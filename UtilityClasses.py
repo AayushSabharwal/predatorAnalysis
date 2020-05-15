@@ -6,12 +6,13 @@ class Vector:
     Represents an n-dimensional quantity
     """
 
-    def __init__(self, dim=2, pos: np.ndarray = np.zeros(2), rnorm=False):
+    def __init__(self, dim=2, pos: np.ndarray = None, rnorm=False):
         assert dim > 0
         self.dim = dim
-        if pos == np.zeros(2):
+        if pos is None:
             self.position = np.zeros(dim)
         else:
+            assert len(pos) == dim
             self.position = pos
 
         if rnorm:
@@ -50,11 +51,17 @@ class Vector:
         """
         return self.sqrmagnitude() ** 0.5
 
-    def normalize(self):
+    def normalized(self):
         """
         Returns another Vector, which is the normalised (magnitude 1) version of this
         """
         return Vector(self.dim, self.position / self.magnitude())
+
+    def normalize(self):
+        """
+        Normalizes this vector
+        """
+        self.position /= self.magnitude()
 
 
 def distance(v1: Vector, v2: Vector):
