@@ -75,17 +75,18 @@ def simulate(dimensions: int = 2, initialSeparation: float = 20, catchRadius: fl
 
 def save_data(dimensions: int, initialSeparation: float, catchRadius: float, arrivedAtTolerance: float,
               maxIterations: int, nIterations: int, minWaypointDist: float, maxWaypointDist: float, samplePoints: int,
-              preyPosition: list, predatorPosition: list, separation: list, waypoints: list, caught: list):
+              preySpeed: float, predatorSpeed: float, preyPosition: list, predatorPosition: list, separation: list,
+              waypoints: list, caught: bool):
     assert nIterations <= maxIterations
     assert dimensions > 0
     assert len(predatorPosition) == len(preyPosition) == len(separation) == len(waypoints)
 
     last = 0
-    all_data = {}
+    all_data = dict()
     if path.isfile("simulationData.txt"):
         with open("simulationData.txt", mode="r") as f:
             all_data = json.load(f)
-        last = max(all_data.keys)
+        last = len(all_data.keys())
 
     all_data[last + 1] = {"dimensions": dimensions,
                           "initialSeparation": initialSeparation,
@@ -96,6 +97,8 @@ def save_data(dimensions: int, initialSeparation: float, catchRadius: float, arr
                           "minWaypointDist": minWaypointDist,
                           "maxWaypointDist": maxWaypointDist,
                           "samplePoints": samplePoints,
+                          "preySpeed": preySpeed,
+                          "predatorSpeed": predatorSpeed,
                           "preyPosition": preyPosition,
                           "predatorPosition": predatorPosition,
                           "separation": separation,
