@@ -29,11 +29,28 @@ class Vector:
         return Vector(dim=self.dim, pos=self.position - other.position)
 
     def __mul__(self, other):
-        assert type(other) in [float, int]
-        return Vector(dim=self.dim, pos=self.position * other)
+        """
+        scalar or dot product
+        """
+        if type(other) in [float, int]:
+            return Vector(dim=self.dim, pos=self.position * other)
+        elif type(other) is Vector:
+            assert self.dim == other.dim
+            return sum([self.position[i] + other.position[i] for i in range(self.dim)])
 
     def __neg__(self):
         return Vector(dim=self.dim, pos=-self.position)
+
+    def __repr__(self):
+        return str(self.position)
+
+    def __str__(self):
+        return str(self.position)
+
+    @staticmethod
+    def zero(dim: int = 2):
+        assert dim > 0
+        return Vector(dim, np.zeros(dim))
 
     def sqrmagnitude(self):
         """
@@ -68,9 +85,4 @@ def distance(v1: Vector, v2: Vector):
     """
     Returns the distance between two vectors
     """
-    assert v1.dim == v2.dim
-    dist = 0
-    for i in range(v1.dim):
-        dist += (v1.position[i] - v2.position[i]) ** 2
-
-    return dist ** 0.5
+    return (v1 - v2).magnitude()
